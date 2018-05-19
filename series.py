@@ -5,31 +5,30 @@ import math
 
 
 Sn = 0
-zeroCounter = 0  # zeroCounter will +1 whenever an < epsylon
-epsylon = 0.0001
+epsilon = 0.0001  # How close to zero an needs to get
+zeroCounter = 0   # zeroCounter will +1 whenever abs(an) < epsilon
+zeroCountTo = 30  # How many consecutive times abs(an) needs to be < epsilon
 
-# Common series: Σ x^n / n!  range(0,infty)  = e^x
-# Σ (-1)^n * x^(2n+1)/(2n+1)! range(0,infty) = sin x
+for n in range(0, 100000):    # Range for Series
 
-for n in range(1, 100000):
-
-    an = 1/(2**n - 3*n**2)
+    an = 1/math.factorial(n)  # Expression for terms of sequence (to be sum'ed)
     Sn += an
 
     print("at n = {:3},\tan = {:15.12f},\tSn = {:15.12f}"
           .format(n, an, Sn), end="  ")
 
-    if abs(an) < epsylon:
+    if abs(an) < epsilon:
         zeroCounter += 1
         print("an < ε")
-        if zeroCounter == 30:
+        if zeroCounter == zeroCountTo:
             print("\nan appears to -> 0, stopping eval-loop." +
                   "Series *may* be converging!")
             break
     else:
+        zeroCounter = 0
         print("")
 
-if an > epsylon:
-    print("an is still > ε, this may indicate that the series diverges")
+if an > epsilon:
+    print("an is still > ε, this *may* indicate divergence")
 
 print("\n*** evaluating series completed ***")
